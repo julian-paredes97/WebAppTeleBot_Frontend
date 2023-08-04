@@ -1,7 +1,8 @@
 import {createContext, useEffect, useState} from "react";
-import axios from "axios";
+//import axios from "axios";
+import productsData from "../Data/ProductsData";
 
-const tele = window.Telegram.WebApp; //Permite conectarse a telegram
+//const tele = window.Telegram.WebApp; //Permite conectarse a telegram
 
 /* Se crea el contexto que usara el front: */
 export const CartContext = createContext();
@@ -12,26 +13,36 @@ export const CartProvider = ({children})=>{
     //y los productos de la BD:
     const [cartItems, setCartItems] = useState([]);
     const [products, setProducts] = useState([]);
-    const [datosUsuario, setDatosUsuario] = useState([{}]);
+    //const [datosUsuario, setDatosUsuario] = useState([{}]);
     /* Se crea un estado para saber cuando mostrar el carrito: */
     const [showCart,setShowCart] = useState(true);
 
+
+    useEffect(() => {
+        /* Trae datos de los productos*/
+        setProducts(productsData)
+        console.log("productsData:",productsData)
+    }, []);
+    
+
+
+
     /* Funcion que permite traer los productos del backend y almacenarlos en la const products:*/
-    const getProducts = async () => {
-        const data = await axios.get("https://flask-web-bot-app.loca.lt/prod/productos")
-        const products = data.data.productos
-        setProducts(products);
-    };
+    // const getProducts = async () => {
+    //     const data = await axios.get("https://flask-web-bot-app.loca.lt/prod/productos")
+    //     const products = data.data.productos
+    //     setProducts(products);
+    // };
 
 
     /* hook que se ejecuta solo una vez cuando se abre el front */
-    useEffect(() => {
-        /* Trae datos del usuario desde la WebApp de Telegram */
-        let initDataUnsafe = window.Telegram.WebApp.initDataUnsafe.user;
-        setDatosUsuario(initDataUnsafe);
-        getProducts();
+    // useEffect(() => {
+    //     /* Trae datos del usuario desde la WebApp de Telegram */
+    //     let initDataUnsafe = window.Telegram.WebApp.initDataUnsafe.user;
+    //     setDatosUsuario(initDataUnsafe);
+    //     getProducts();
 
-    }, []);
+    // }, []);
 
     /* Funcion que permite añadir un producto al carrito de compras */
     const addItemToCart =  (product) => {
@@ -73,7 +84,7 @@ export const CartProvider = ({children})=>{
     };
 
     /* Funcion que permite enviar los datos del pedido completo al backend: */
-    const makeOrder = async () => {
+    const makeOrder = () => {
 
         console.log("carrito:",cartItems)
         let carritoTemp = cartItems;
@@ -87,12 +98,12 @@ export const CartProvider = ({children})=>{
         //y los datos del usuario correspondiente:
         const carrito = {
             ...carritoTemp,
-            datosUsuario
+            /*datosUsuario*/
         };
         
-        let result = await axios.post("https://flask-web-bot-app.loca.lt/recibePedido",carrito)     //POST al backend
-        tele.close();  //se cierra la ventana de la WebApp de Telegram
-        console.log(result.data.data);
+        //let result = await axios.post("https://flask-web-bot-app.loca.lt/recibePedido",carrito)     //POST al backend
+        //tele.close();  //se cierra la ventana de la WebApp de Telegram
+        //console.log(result.data.data);
         
         return carrito
     };

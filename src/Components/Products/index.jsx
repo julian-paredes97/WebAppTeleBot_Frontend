@@ -5,7 +5,7 @@ import styles from "./styles.module.scss"
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
-const tele = window.Telegram.WebApp; //conecta a telegram
+//const tele = window.Telegram.WebApp; //conecta a telegram
 
 var temp;
 
@@ -25,10 +25,10 @@ function Products () {
 
   const [dropdown,setDropdown] = useState(false);
 
-  useEffect(() => {              //conectar a telegram
-    tele.ready();                //avisa a la WebApp que ya esta conectado a telegram
-    tele.expand();               //Expande la ventana de la WebApp
-  });
+  // useEffect(() => {              //conectar a telegram
+  //   tele.ready();                //avisa a la WebApp que ya esta conectado a telegram
+  //   tele.expand();               //Expande la ventana de la WebApp
+  // });
 
 
   const abrirCerrarDropdown = () =>{  //funcion que permite abrir o cerrar el dropdown
@@ -40,25 +40,16 @@ function Products () {
     count = true;
   }
 
-  const accionAseo =() =>{
-    temp = filteredAseo;        //cambia todos los productos por solo los de aseo
-    count = true;
-  }
-
   const accionAldor =() =>{
     temp = filteredAldor;       //cambia todos los productos por solo los de aldor
     count = true;
+    console.log("aber el temp",temp)
+    console.log("aber los productos:",products)
+
   }
 
   const accionFarmacos =() =>{
     temp=filteredFarmacos;     //cambia todos los productos por solo los farmacos
-    console.log(temp)
-    count = true;
-  }
-
-  const accionCuidadoIntimo =() =>{
-    temp=filteredCuidadoIntimo;     //cambia todos los productos por solo los de cuidado intimo
-    console.log(temp)
     count = true;
   }
 
@@ -72,31 +63,19 @@ function Products () {
     count = true;
   }
 
-  const accionEnlatados =() =>{
-    temp = filteredEnlatados;           //cambia todos los productos por solo los enlatados
+  const accionHogar =() =>{
+    temp = filteredHogar;           //cambia todos los productos por solo los del hogar
     count = true;
   }
 
-  const accionTratCapilares =() =>{
-    temp = filteredTratCapilares;         //cambia todos los productos por solo los tratamientos capilares
-    count = true;
-  }
 
   // Filtros que se van a aplicar:
-  const filteredAseo = products.filter(obj => {
-    return obj.categoria ==='GLOBOVENTAS (COLGATE)';
-  });
-
   const filteredAldor = products.filter(obj => {
-    return obj.categoria ==='COMESTIBLES ALDOR';
+    return obj.categoria ==='COMESTIBLES';
   });
 
   const filteredFarmacos = products.filter(obj => {
     return obj.categoria === 'FARMACOS';
-  });
-
-  const filteredCuidadoIntimo = products.filter(obj => {
-    return obj.categoria === 'CUIDADO INTIMO';
   });
 
   const filteredCuidadoPersonal = products.filter(obj => {
@@ -107,12 +86,8 @@ function Products () {
     return obj.categoria === 'DETERGENTES';
   });
 
-  const filteredEnlatados = products.filter(obj => {
-    return obj.categoria === 'ENLATADOS';
-  });
-
-  const filteredTratCapilares = products.filter(obj => {
-    return obj.categoria === 'TRATAMIENTOS CAPILARES';
+  const filteredHogar = products.filter(obj => {
+    return obj.categoria === 'HOGAR';
   });
 
   return (
@@ -125,21 +100,15 @@ function Products () {
         <DropdownMenu>
           <DropdownItem onClick={()=>accionTodas()}> Todas </DropdownItem>
           <DropdownItem divider/>
-          <DropdownItem onClick={()=>accionAseo()}> Aseo </DropdownItem>
-          <DropdownItem divider/>
-          <DropdownItem onClick={()=>accionAldor()}> Comestibles Aldor </DropdownItem>
-          <DropdownItem divider/>
-          <DropdownItem onClick={()=>accionCuidadoIntimo()}> Cuidado Intimo </DropdownItem>
+          <DropdownItem onClick={()=>accionAldor()}> Comestibles </DropdownItem>
           <DropdownItem divider/>
           <DropdownItem onClick={()=>accionCuidadoPersonal()}> Cuidado Personal </DropdownItem>
           <DropdownItem divider/>
           <DropdownItem onClick={()=>accionDetergentes()}> Detergentes </DropdownItem>
           <DropdownItem divider/>
-          <DropdownItem onClick={()=>accionEnlatados()}> Enlatados </DropdownItem>
+          <DropdownItem onClick={()=>accionHogar()}> Hogar </DropdownItem>
           <DropdownItem divider/>
           <DropdownItem onClick={()=>accionFarmacos()}> Farmacos </DropdownItem>
-          <DropdownItem divider/>
-          <DropdownItem onClick={()=>accionTratCapilares()}> Tratamientos capilares </DropdownItem>
         </DropdownMenu>
       </Dropdown>
 
